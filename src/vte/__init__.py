@@ -1,7 +1,7 @@
 
 __version__ = '0.0.1'
 
-from libvte.template_rgy import TemplateRgy, TemplateInfo
+#from vte.template_rgy import TemplateRgy, TemplateInfo
 # import os
 # import sys
 # 
@@ -14,7 +14,7 @@ from libvte.template_rgy import TemplateRgy, TemplateInfo
 # sys.path.insert(0, vte_dir + "/lib")
 
 
-__all__ = [
-     'TemplateRgy'
-     'TemplateInfo'
-     ]
+#__all__ = [
+#     'TemplateRgy'
+#     'TemplateInfo'
+#     ]

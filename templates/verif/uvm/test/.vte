@@ -1,0 +1,7 @@
+
+[template]
+
+[parameter:base_class]
+description = Base class
+default = uvm_test
+

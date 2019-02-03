@@ -1,0 +1,14 @@
+#****************************************************************************
+#* IVPM Googletest-HDL Project
+#****************************************************************************
+
+[template]
+desc = IVPM project with dependences for Googletest-HDL configured
+
+[parameter:version]
+desc=Starting version for this project
+default=0.0.1
+
+[parameter:rootvar]
+desc=Specify a root variable for this project
+default=

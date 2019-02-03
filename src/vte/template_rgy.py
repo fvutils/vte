@@ -10,16 +10,16 @@ import configparser
 #import yaml
 
 class Parameter:
-    def __init__(self, pname, desc, default):
+    def __init__(self, pname, desc, has_default, default):
         self.pname = pname
         self.desc = desc
+        self.has_default = has_default
         self.default = default
 
 class TemplateInfo (jinja2.BaseLoader):
     def __init__(self, 
                  tmpl_id, 
                  vte_file):
-        print("template_info::init " + tmpl_id)
         self.tmpl_id = tmpl_id
         self.tmpl_dir = os.path.dirname(vte_file)
         self.parameters = {}
@@ -28,29 +28,52 @@ class TemplateInfo (jinja2.BaseLoader):
         vte.read(vte_file)
         
         for s in vte.sections():
-            print("Section: " + str(s))
             s = s.strip()
             if s.startswith("parameter"):
                 colon_idx = s.find(":")
                 if s == -1:
                     print("Error: malformed parameter section \"" + s + "\"")
                 pname = s[colon_idx+1:].strip()
-                print("  Parameter: " + pname)
+               
+                if "desc" in vte[s].keys():
+                    desc = vte[s]["desc"]
+                else:
+                    desc = ""
+                     
+                if "default" in vte[s].keys():
+                    default_val = vte[s]["default"]
+                    has_default = True
+                else:
+                    default_val = ""
+                    has_default = False
                 
-                param = Parameter(pname, "desc", "default")
+                param = Parameter(pname, desc, has_default, default_val)
                 self.parameters[pname] = param
             
     def list_templates(self):
-        print("list_templates")
         templates = []
-        for f in os.listdir(self.tmpl_dir):
-            # TODO: must respect filter list from spec
-            if f != ".vte":
-                templates.append(f)
+        self.find_template_files(self.tmpl_dir, "", templates)
+        
         return templates
     
+    def find_template_files(self, parent_dir_abs, parent_name, templates):
+        for f in os.listdir(parent_dir_abs):
+            if parent_name == "":
+                this_name = f;
+            else:
+                this_name = os.path.join(parent_name, f)
+                
+            if os.path.isdir(os.path.join(parent_dir_abs, f)):
+                # Must recurse
+                self.find_template_files(
+                    os.path.join(parent_dir_abs, f),
+                    this_name,
+                    templates)
+            elif f != ".vte":
+                templates.append(this_name)
+                
+    
     def get_source(self, environment, template):
-        print("get_source")
         path = os.path.join(self.tmpl_dir, template)
         if not os.path.exists(path):
             raise jinja2.TemplateNotFound(template)
@@ -58,13 +81,11 @@ class TemplateInfo (jinja2.BaseLoader):
         f = open(path, "r")
         source = f.read()
         f.close()
-        print("path=" + path + " source=" + str(source))
         return source, path, lambda: mtime == os.path.getmtime(path)
 
         
 class TemplateRgy:
     def find_templates(self, dir, template_id):
-        print("find_templates ", dir)
         
         if os.path.isfile(os.path.join(dir, ".vte")):
             if len(template_id) == 0:

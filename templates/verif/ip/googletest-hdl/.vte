@@ -1,0 +1,7 @@
+
+[template]
+desc = Template verification environment for an IP with Googletest-HDL
+
+[parameter:sim]
+desc = Default simulator for the project
+default = vl

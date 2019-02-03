@@ -5,3 +5,7 @@ desc = Template verification environment for an IP with Googletest-HDL
 [parameter:sim]
 desc = Default simulator for the project
 default = vl
+
+[parameter:clk_period]
+desc = Specifies the clock period to use
+default = 10

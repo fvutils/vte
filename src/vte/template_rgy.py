@@ -69,7 +69,7 @@ class TemplateInfo (jinja2.BaseLoader):
                     os.path.join(parent_dir_abs, f),
                     this_name,
                     templates)
-            elif f != ".vte":
+            elif f != ".vte" and f.endswith(".swp") == False:
                 templates.append(this_name)
                 
     
@@ -79,7 +79,10 @@ class TemplateInfo (jinja2.BaseLoader):
             raise jinja2.TemplateNotFound(template)
         mtime = os.path.getmtime(path)
         f = open(path, "r")
-        source = f.read()
+        try:
+          source = f.read()
+        except:
+          print("Error reading file \"" + path + "\"");
         f.close()
         return source, path, lambda: mtime == os.path.getmtime(path)
 

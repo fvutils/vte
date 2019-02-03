@@ -13,7 +13,7 @@ else # Rules
 
 
 lib{{name}}_tests.o : $({{name}}_TESTS_SRC:.cpp=.o)
-        $(Q)$(LD) -r -o $@ $({{name}}_TESTS_SRC:.cpp=.o)
+	$(Q)$(LD) -r -o $@ $({{name}}_TESTS_SRC:.cpp=.o)
         
 
 endif

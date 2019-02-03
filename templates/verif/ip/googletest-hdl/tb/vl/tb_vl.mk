@@ -16,7 +16,7 @@ else # Rules
 # Compilation of the testbench wrapper requires the
 # translated header files produced by vl_translate.d
 lib{{name}}_tb_vl.o : {{name}}_tb_hdl.cpp vl_translate.d
-        $(CXX) -c -o $@ $(CXXFLAGS) $(filter %.cpp,$(^))
+	$(Q)$(CXX) -c -o $@ $(CXXFLAGS) $(filter %.cpp,$(^))
 
 endif
 

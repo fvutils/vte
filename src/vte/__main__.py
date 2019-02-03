@@ -30,7 +30,6 @@ def substitute(vars, str):
             
         i=idx+2
       
-    print("str: " + str) 
     return str
 
 def generate(args, parameters, rgy):
@@ -74,9 +73,10 @@ def generate(args, parameters, rgy):
             pass
         
         filename = substitute(global_vars, filename)
-        
+
+        print("Note: processing template " + tmpl_e.name)        
         result = tmpl_e.render(global_vars)
-        print("Result: " + result)
+#        print("Result: " + result)
        
         dir = os.path.dirname(filename)
         

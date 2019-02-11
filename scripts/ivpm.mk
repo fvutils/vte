@@ -8,6 +8,7 @@ BUILD_DIR := $(ROOT_DIR)/build
 BUILD_DEPS += $(BUILD_DIR)/pyyaml.d
 BUILD_DEPS += $(BUILD_DIR)/jinja2.d
 BUILD_DEPS += $(BUILD_DIR)/markupsafe.d
+EDAPACK_BUILD_URL=https://github.com/EDAPack/edapack-build
 
 -include $(PACKAGES_DIR)/packages.mk
 include $(ROOT_DIR)/etc/ivpm.info
@@ -26,6 +27,8 @@ MARKUPSAFE_VERSION=1.0
 MARKUPSAFE_DIR=markupsafe-$(MARKUPSAFE_VERSION)
 MARKUPSAFE_TGZ=$(BUILD_DIR)/$(MARKUPSAFE_DIR).tar.gz
 MARKUPSAFE_URL=https://github.com/pallets/markupsafe/archive/$(MARKUPSAFE_VERSION).tar.gz
+
+PACKAGE=$(BUILD_DIR)/vte-$(version).tar.gz
 
 RULES := 1
 
@@ -79,8 +82,13 @@ $(MARKUPSAFE_TGZ) :
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)wget -O $@ $(MARKUPSAFE_URL)
 
-release :
-	echo "TODO: release"
-	exit 1
+release : $(PACKAGE) $(PACKAGES_DIR)/upload.py
+	$(Q)python3 $(PACKAGES_DIR)/upload.py \
+		--user mballance --repo vte \
+		--key $(GITHUB_API_TOKEN) --version $(version) $(PACKAGE)
+
+$(PACKAGES_DIR)/upload.py :
+	$(Q)mkdir -p $(PACKAGES_DIR)
+	$(Q)$(WGET) -O $@ $(EDAPACK_BUILD_URL)/raw/master/scripts/upload.py
 
 -include $(PACKAGES_DIR)/packages.mk

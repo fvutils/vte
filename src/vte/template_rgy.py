@@ -23,6 +23,7 @@ class TemplateInfo (jinja2.BaseLoader):
         self.tmpl_id = tmpl_id
         self.tmpl_dir = os.path.dirname(vte_file)
         self.parameters = {}
+        self.desc = ""
        
         vte = configparser.ConfigParser()
         vte.read(vte_file)
@@ -49,6 +50,11 @@ class TemplateInfo (jinja2.BaseLoader):
                 
                 param = Parameter(pname, desc, has_default, default_val)
                 self.parameters[pname] = param
+            elif s == "template":
+              if "desc" in vte[s].keys():
+                self.desc = vte[s]["desc"];
+            else:
+              print("Warning: unhandled section \"" + s + "\" in template " + self.tmpl_id)
             
     def list_templates(self):
         templates = []

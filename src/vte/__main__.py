@@ -32,6 +32,19 @@ def substitute(vars, str):
       
     return str
 
+def list_templates(args, rgy):
+    print("list_templates")
+    template_ids = sorted(rgy.template_map.keys())
+
+    max_len = 0
+    for id in template_ids:
+      if len(id) > max_len:
+        max_len = len(id)
+
+    fmt_str = "%-" + str(max_len) + "s - %s"
+    for id in template_ids:
+      print(fmt_str % (id, rgy.template_map[id].desc))
+
 def generate(args, parameters, rgy):
     if args.template not in rgy.template_map.keys():
         print("Error: template does not exist")
@@ -140,21 +153,12 @@ def main():
              metavar="KEY=VALUE", 
              nargs="*",
              help="Specify other template variables")
+
+    list_cmd = subparser.add_parser("list",
+        help="list available templates")
     
     args = parser.parse_args()
 
-    if args.name.find("=") != -1:
-        print("Error: name contains '='")
-        exit(1)
-           
-    # Check that parameters are properly-specified 
-    parameters = {}
-    for param in args.parameters:
-        idx = param.find("=")
-        if idx == -1:
-            print("Error: parameter specification \"" + param + "\" doesn't contain '='");
-            exit(1)
-        parameters[param[:idx]] = param[idx+1:]
             
     template_path = []
     template_path.append("/project/fun/vte/vte-mballance/templates")
@@ -167,7 +171,24 @@ def main():
     rgy = template_rgy.TemplateRgy(template_path)
     
     if args.subcmd == "generate":
+        if args.name.find("=") != -1:
+            print("Error: name contains '='")
+            exit(1)
+           
+        # Check that parameters are properly-specified 
+        parameters = {}
+        for param in args.parameters:
+            idx = param.find("=")
+            if idx == -1:
+                print("Error: parameter specification \"" + param + "\" doesn't contain '='");
+                exit(1)
+            parameters[param[:idx]] = param[idx+1:]
+
         generate(args, parameters, rgy)
+    elif args.subcmd == "list":
+        list_templates(args, rgy)
+    else:
+        exit(1);
     
 
 if __name__ == "__main__":

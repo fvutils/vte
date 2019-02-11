@@ -1,0 +1,32 @@
+#!/bin/bash
+#****************************************************************************
+#* vte launcher
+#****************************************************************************
+
+# First, determine the location of this script
+if test -f $0; then
+  script_dir=$(dirname $0)
+  script_dir=$(cd $script_dir ; pwd)
+else
+  # Find ourselves in the PATH
+  for elem in $(echo PATH | sed -e 's%:% %g'); do
+    script=${elem}/$0
+    if test -f $script; then
+      script_dir=$elem
+      break
+    fi
+  done
+fi
+
+vte_dir=$(dirname ${script_dir})
+# Need to adjust PYTHONPATH to find dependencies
+export PYTHONPATH=${vte_dir}/lib:$PYTHONPATH
+
+# This is a development area
+if test -d ${vte_dir}/src; then
+  export PYTHONPATH=${vte_dir}/src:$PYTHONPATH
+fi
+
+python3 -m vte ${@:1}
+
+

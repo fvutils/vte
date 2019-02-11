@@ -12,4 +12,4 @@ class TemplateEngine:
         self.env = Environment(loader=templLoader)
        
     def generate(self):
-        print "Generate"
+        print("Generate")

@@ -161,7 +161,14 @@ def main():
 
             
     template_path = []
-    template_path.append("/project/fun/vte/vte-mballance/templates")
+    template_path.append(
+	os.path.join(
+		os.path.dirname(
+			os.path.dirname(
+				os.path.dirname(os.path.realpath(__file__))
+				)),
+		"templates")
+	)
    
     # Bring in the template path elements from 
     if os.getenv("VTE_TEMPLATE_PATH") != None:

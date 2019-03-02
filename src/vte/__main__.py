@@ -63,7 +63,7 @@ def generate(args, parameters, rgy):
     }
     
     # First, check all template parameters
-    # and set the default or 
+    # and set the default or take user value
     for param_k in template.parameters.keys():
         param = template.parameters[param_k]
        
@@ -78,7 +78,28 @@ def generate(args, parameters, rgy):
     for param_k in parameters.keys():
         if param_k not in template.parameters.keys():
             print("Warning: user-specified parameter \"" + param_k + "\" has no effect")
+
+    # If 'force' is not set, check for files that might be overwritten
+    existing_files = False
    
+    if args.force == False:
+        for tmpl in env.list_templates():
+            tmpl_e = env.get_template(tmpl)
+       
+            filename = substitute(global_vars, tmpl_e.name)
+            try:
+                filename = tmpl_e.module.filename;
+            except:
+                pass
+        
+            filename = substitute(global_vars, filename)
+            
+            if os.path.exists(filename):
+                print("Error: output file \"" + filename + "\" already exists")
+                existing_files = True
+
+    if existing_files == True:
+        exit(1)
         
     for tmpl in env.list_templates():
         tmpl_e = env.get_template(tmpl)

@@ -1,6 +1,6 @@
 
 [template]
-desc = Template verification environment for an IP with Googletest-HDL
+desc = IP verification environment using Googletest-HDL
 
 [parameter:sim]
 desc = Default simulator for the project

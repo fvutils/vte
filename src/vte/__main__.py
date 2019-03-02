@@ -33,7 +33,6 @@ def substitute(vars, str):
     return str
 
 def list_templates(args, rgy):
-    print("list_templates")
     template_ids = sorted(rgy.template_map.keys())
 
     max_len = 0
@@ -45,6 +44,10 @@ def list_templates(args, rgy):
     for id in template_ids:
       print(fmt_str % (id, rgy.template_map[id].desc))
 
+#********************************************************************
+#* generate()
+#* 
+#********************************************************************
 def generate(args, parameters, rgy):
     if args.template not in rgy.template_map.keys():
         print("Error: template does not exist")
@@ -75,11 +78,12 @@ def generate(args, parameters, rgy):
     for param_k in parameters.keys():
         if param_k not in template.parameters.keys():
             print("Warning: user-specified parameter \"" + param_k + "\" has no effect")
+   
         
     for tmpl in env.list_templates():
         tmpl_e = env.get_template(tmpl)
        
-        filename = tmpl_e.name
+        filename = substitute(global_vars, tmpl_e.name)
         try:
             filename = tmpl_e.module.filename;
         except:
@@ -146,7 +150,10 @@ def main():
     subparser = parser.add_subparsers(dest="subcmd")
     generate_cmd = subparser.add_parser("generate",
         help="generate source files")
-    
+
+    generate_cmd.add_argument("-force", 
+        action="store_true",
+        help="force overwrite of existing files")    
     generate_cmd.add_argument("template", help="ID of template")
     generate_cmd.add_argument("name", help="Name to use in the template")
     generate_cmd.add_argument("parameters", 
@@ -195,6 +202,8 @@ def main():
     elif args.subcmd == "list":
         list_templates(args, rgy)
     else:
+        print("Error: no subcommand specified")
+        parser.print_help()
         exit(1);
     
 

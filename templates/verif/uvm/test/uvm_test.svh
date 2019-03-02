@@ -2,8 +2,7 @@
  * {{name}}.svh
  * 
  ****************************************************************************/
-{%set filename = "{{name}}/tests/{{name}}.svh" %}
-{%set chmod = "+x" %}
+{%set filename = "{{name}}.svh" %}
 /**
  * Class: {{name}}
  * TODO: Document UVM Test {{name}}

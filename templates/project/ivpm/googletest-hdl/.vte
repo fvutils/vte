@@ -3,7 +3,7 @@
 #****************************************************************************
 
 [template]
-desc = IVPM project with dependences for Googletest-HDL configured
+desc = IVPM project with Googletest-HDL dependence
 
 [parameter:version]
 desc=Starting version for this project

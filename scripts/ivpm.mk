@@ -1,4 +1,6 @@
-
+#****************************************************************************
+#* ivpm.mk for VTE
+#****************************************************************************
 SCRIPTS_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 ROOT_DIR := $(abspath $(SCRIPTS_DIR)/..)
 PACKAGES_DIR ?= $(ROOT_DIR)/packages
@@ -81,6 +83,23 @@ $(BUILD_DIR)/markupsafe.d : $(MARKUPSAFE_TGZ)
 $(MARKUPSAFE_TGZ) :
 	$(Q)if test ! -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	$(Q)wget -O $@ $(MARKUPSAFE_URL)
+
+package : $(PACKAGE)
+
+PACKAGE_DEPS += build
+PACKAGE_DEPS += $(shell find $(ROOT_DIR)/bin -type f)
+PACKAGE_DEPS += $(shell find $(ROOT_DIR)/lib -type f)
+PACKAGE_DEPS += $(shell find $(ROOT_DIR)/src -type f)
+PACKAGE_DEPS += $(shell find $(ROOT_DIR)/templates -type f)
+
+$(PACKAGE) : $(PACKAGE_DEPS)
+	$(Q)rm -rf $(BUILD_DIR)/vte-$(version)
+	$(Q)mkdir -p $(BUILD_DIR)/vte-$(version)
+	$(Q)cp -r $(ROOT_DIR)/bin $(BUILD_DIR)/vte-$(version)
+	$(Q)cp -r $(ROOT_DIR)/lib $(BUILD_DIR)/vte-$(version)
+	$(Q)cp -r $(ROOT_DIR)/src/vte $(BUILD_DIR)/vte-$(version)/lib
+	$(Q)cp -r $(ROOT_DIR)/templates $(BUILD_DIR)/vte-$(version)
+	$(Q)cd $(BUILD_DIR) ; tar czf $@ vte-$(version)
 
 release : $(PACKAGE) $(PACKAGES_DIR)/upload.py
 	$(Q)python3 $(PACKAGES_DIR)/upload.py \

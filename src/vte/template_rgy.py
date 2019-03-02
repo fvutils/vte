@@ -114,33 +114,7 @@ class TemplateRgy:
                         template_id)
                     template_id.pop()
 
-    def process_template(self, root_path, path):
-        dflt_template_id = path[len(root_path):len(path)]
-        dflt_template_id = dflt_template_id.replace('\\', '/')
-        name = os.path.basename(path)
-        while (len(dflt_template_id) > 0 and dflt_template_id.startswith('/')):
-            dflt_template_id = dflt_template_id[1:len(dflt_template_id)]
-           
-        while (len(dflt_template_id) > 0 and dflt_template_id.endswith('/')):
-            dflt_template_id = dflt_template_id[0:len(dflt_template_id)-1]
-            
-        dflt_template_id = dflt_template_id.replace('/', '.')
-       
-        vte_stream = file(os.path.join(path, ".vte"), "r")
-        dot_vte = yaml.load(vte_stream)
-        
-#        tmpl = TemplateInfo(name, dflt_template_id, path)
-       
-#        print "Type ", type(dot_vte)
-        
-#        for key in dot_vte.keys():
-#            print "key: ", key
-             
-#        print "Process template ", root_path, " ", path, " ", dflt_template_id
-        
     def __init__(self, template_path):
-        print("template_rgy::init ", len(template_path))
-        
         self.templates = []
         self.template_map = {}
         

@@ -221,3 +221,18 @@ else
 fi
 ```
 
+
+# Developing VTE
+
+## Building VTE
+VTE depends on several other Python packages. Currently, the 'setup.py' for VTE is incomplete, and not really used. 
+Fetch dependent packages as follows:
+% cd scripts
+% make -f ivpm.mk
+
+This will fetch Jinja2 and other dependent packages and unpack them in the 'lib' directory
+
+## Running VTE in Development Mode
+Running VTE in development mode is nearly identical to running it in release mode: run the 'vte' script in the bin directory, which will set PYTHONPATH appropriately.
+
+

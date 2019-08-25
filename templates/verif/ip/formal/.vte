@@ -1,0 +1,11 @@
+
+[template]
+desc = IP verification environment using formal verification
+
+[parameter:sim]
+desc = Default simulator for the project
+default = vl
+
+[parameter:top]
+desc = Specifies the top-level module
+default = 10

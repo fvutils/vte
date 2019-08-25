@@ -87,8 +87,18 @@ def generate(args, parameters, rgy):
             tmpl_e = env.get_template(tmpl)
        
             filename = substitute(global_vars, tmpl_e.name)
+            file_dir = os.path.dirname(filename)
             try:
-                filename = tmpl_e.module.filename;
+                filename_u = tmpl_e.module.filename
+                
+                if filename_u.find("/") != -1:
+                    # User has specified a relative path, so we assume 
+                    # this is relative to the output directory
+                    filename = filename_u
+                else:
+                    # Just a simple filename, so we assume it is relative
+                    # to the template file
+                    filename = file_dir + "/" + filename_u
             except:
                 pass
         
@@ -105,8 +115,20 @@ def generate(args, parameters, rgy):
         tmpl_e = env.get_template(tmpl)
        
         filename = substitute(global_vars, tmpl_e.name)
+        file_dir = os.path.dirname(filename)
         try:
             filename = tmpl_e.module.filename;
+            
+            filename_u = tmpl_e.module.filename
+                
+            if filename_u.find("/") != -1:
+                # User has specified a relative path, so we assume 
+                # this is relative to the output directory
+                filename = filename_u
+            else:
+                # Just a simple filename, so we assume it is relative
+                # to the template file
+                filename = file_dir + "/" + filename_u
         except:
             pass
         

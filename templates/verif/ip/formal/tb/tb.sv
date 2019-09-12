@@ -13,6 +13,20 @@ module {{name}}_tb(input clock);
 	reg[3:0]	reset_cnt = 0;
 	reg 		reset = 1;
 	
+`ifndef FORMAL
+	reg clk = 0;
+	always #10 clk = ~clk;
+	assign clock = clk;
+	
+	initial begin
+		$dumpfile("simx.vcd");
+		$dumpvars(0, {{name}}_tb);
+		
+		#1000;
+		$finish;
+	end
+`endif
+	
 	always @(posedge clock) begin
 		if (reset_cnt == 1) begin
 			reset <= 0;

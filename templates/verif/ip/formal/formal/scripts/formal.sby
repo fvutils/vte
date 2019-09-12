@@ -6,7 +6,7 @@
 {% set filename = "{{name}}.sby" %}
 
 [options]
-mode bmc
+mode {MODE}
 depth {DEPTH}
 
 [engines]
@@ -14,17 +14,12 @@ smtbmc boolector
 
 [script]
 # TODO: add in RTL files
-read -sv -formal \
-{{name}}_checker.sv \
-{{name}}_test.sv \
-{{name}}_tb.sv
+read -sv -formal {CORE_SRC_FILES}
 prep -top {{name}}_tb
 
 [files]
-# TODO: add in RTL files
+# TODO: copy included files
+{VE_DIR}/tb/{{name}}_defines.svh
 
-{VE_DIR}/tb/{{name}}_tb.sv
-{{name}}_checker.sv {VE_DIR}/tb/{CHECKER}.sv
-{{name}}_test.sv {VE_DIR}/tests/{TESTNAME}_test.sv
 
 

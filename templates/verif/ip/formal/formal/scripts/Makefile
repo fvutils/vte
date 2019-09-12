@@ -4,12 +4,22 @@
 include $(PACKAGES_DIR)/packages.mk
 include $(PACKAGES_DIR)/simscripts/mkfiles/plusargs.mk
 
-RUN_TARGETS += run-sby
 CHECKER=$(call get_plusarg,CHECKER,$(PLUSARGS))
 DEPTH=$(call get_plusarg,DEPTH,$(PLUSARGS))
+MODE=$(call get_plusarg,MODE,$(PLUSARGS))
 
 ifeq (,$(DEPTH))
 DEPTH=32
+endif
+
+ifeq (,$(MODE))
+MODE=bmc
+endif
+
+ifeq (sim,$(MODE))
+RUN_TARGETS += run-sim
+else
+RUN_TARGETS += run-sby
 endif
 
 include $(PACKAGES_DIR)/simscripts/mkfiles/common_sim.mk
@@ -23,12 +33,30 @@ endif
 
 VE_DIR := $(abspath $(SIM_DIR)/..)
 
-# List of variables to substitute in the .sby file
-SBY_VARS += CHECKER TESTNAME DEPTH VE_DIR
+# TODO: Add source files here
+CORE_SRC_FILES += $(VE_DIR)/tb/{{name}}_tb.sv
+CORE_SRC_FILES += $(VE_DIR)/tb/$(CHECKER).sv
+CORE_SRC_FILES += $(VE_DIR)/tests/$(TESTNAME)_test.sv
 
-run-sby :
+# TODO: Add include paths here
+IVL_FLAGS += -I $(VE_DIR)/tb
+
+
+# List of variables to substitute in the .sby file
+SBY_VARS += CHECKER TESTNAME DEPTH MODE VE_DIR CORE_SRC_FILES
+
+{{name}}_tb_defines.svh :
+	$(Q)echo "\`define TEST_MODULE $(TESTNAME)_test" > $@
+	$(Q)echo "\`define CHECKER_MODULE $(CHECKER)" >> $@
+
+run-sby : {{name}}_tb_defines.svh
 	$(Q)sed $(SIM_DIR)/scripts/{{name}}.sby \
 		$(foreach v,$(SBY_VARS),-e 's%{$(v)}%$($(v))%g') > {{name}}.sby
 	$(Q)sby -f {{name}}.sby $(REDIRECT)
+
+run-sim : {{name}}_tb_defines.svh
+	 $(Q)iverilog $(IVL_FLAGS) $(CORE_SRC_FILES)
+	 $(Q)vvp -l simx.log a.out
+
 
 include $(PACKAGES_DIR)/packages.mk

@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
   name = "vte",
   packages=['vte'],
-  package_dir = {'vte' : 'src/vte'},
+  package_dir = {'' : 'src'},
   author = "Matthew Ballance",
   author_email = "matt.ballance@gmail.com",
   description = ("VTE is a Verification Template Engine for generating content for verification environments from template files and parameters."),

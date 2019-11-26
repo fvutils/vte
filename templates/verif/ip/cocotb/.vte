@@ -1,0 +1,11 @@
+
+[template]
+desc = IP verification environment using Googletest-HDL
+
+[parameter:sim]
+desc = Default simulator for the project
+default = vlsim
+
+[parameter:clk_period]
+desc = Specifies the clock period to use
+default = 10

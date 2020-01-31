@@ -1,4 +1,8 @@
-
+/****************************************************************************
+ * {{name}}_seq_base.svh
+ * 
+ ****************************************************************************/
+{% set filename = "{{name}}_seq_base.svh" %} 
 
 class {{name}}_seq_base `{{name}}_plist extends uvm_sequence #({{name}}_seq_item `{{name}}_params);
 	typedef {{name}}_seq_base `{{name}}_params this_t;

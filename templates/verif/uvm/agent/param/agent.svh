@@ -1,4 +1,8 @@
-
+/****************************************************************************
+ * {{name}}_agent.svh
+ * 
+ ****************************************************************************/
+{% set filename = "{{name}}_agent.svh" %} 
 
 /**
  * Class: {{name}}_agent
@@ -11,10 +15,10 @@ class {{name}}_agent `{{name}}_plist extends uvm_agent;
 
 	const string report_id = "{{name}}_agent";
 	
-	typedef {{name}}_driver `{{name}}_params 	drv_t;
-	typedef {{name}}_config `{{name}}_params 	cfg_t;
-	typedef {{name}}_monitor `{{name}}_params	mon_t;
-	typedef seq_i_t `{{name}}_params seq_i_t;
+	typedef {{name}}_driver     `{{name}}_params 	drv_t;
+	typedef {{name}}_config     `{{name}}_params 	cfg_t;
+	typedef {{name}}_monitor    `{{name}}_params	mon_t;
+	typedef {{name}}_seq_item   `{{name}}_params   seq_i_t;
 
 	drv_t													m_driver;
 	uvm_sequencer #(seq_i_t)			m_seqr;

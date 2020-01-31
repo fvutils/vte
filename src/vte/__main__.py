@@ -121,7 +121,7 @@ def generate(args, parameters, rgy):
             
             filename_u = tmpl_e.module.filename
                 
-            if filename_u.find("/") != -1:
+            if filename_u.find("/") != -1 or file_dir == "":
                 # User has specified a relative path, so we assume 
                 # this is relative to the output directory
                 filename = filename_u
@@ -137,7 +137,7 @@ def generate(args, parameters, rgy):
         print("Note: processing template " + tmpl_e.name)        
         result = tmpl_e.render(global_vars)
 #        print("Result: " + result)
-       
+
         dir = os.path.dirname(filename)
         
         if dir != "":

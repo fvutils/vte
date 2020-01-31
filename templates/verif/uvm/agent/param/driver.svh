@@ -1,6 +1,10 @@
+/****************************************************************************
+ * {{name}}_driver.svh
+ * 
+ ****************************************************************************/
+{% set filename = "{{name}}_driver.svh" %} 
 
-
-class {{name}}_driver `{{name}}_plist extends uvm_driver #({{name}}_seq_item `{{name}}_param);
+class {{name}}_driver `{{name}}_plist extends uvm_driver #({{name}}_seq_item `{{name}}_params);
 	
 	typedef {{name}}_driver   `{{name}}_params this_t;
 	typedef {{name}}_config   `{{name}}_params cfg_t;

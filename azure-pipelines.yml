@@ -1,0 +1,32 @@
+variables:
+  build_num: $(Build.BuildNumber)
+  
+jobs:
+- job: PyPi_Linux
+  pool:
+   vmImage: 'ubuntu-18.04'
+  steps:
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to PATH
+    
+  - script: |
+      python -m pip install wheel
+      python -m pip install twine
+    displayName: 'Install wheel+twine'
+    
+  - script: |
+      python setup.py bdist_wheel --universal
+    displayName: 'Build Wheel'
+  - task: TwineAuthenticate@1
+    condition: eq(variables['Build.SourceBranchName'], 'master')
+    inputs:
+      pythonUploadServiceConnection: pypi-vte
+  - script: |
+      # Only deploy from master
+      if test "$(Build.SourceBranchName)" = "master"; then
+          python -m twine --version
+          echo "Calling twine"
+          python -m twine upload -r vte --config-file $(PYPIRC_PATH) dist/*.whl
+          echo "Calling twine complete"
+      fi
+    displayName: 'Upload to PyPi'

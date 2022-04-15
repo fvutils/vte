@@ -2,8 +2,14 @@
 import os
 from setuptools import setup
 
+version="0.0.2"
+
+if "BUILD_NUM" in os.environ.keys():
+    version += "_" + os.environ["BUILD_NUM"]
+
 setup(
   name = "vte",
+  version=version,
   packages=['vte'],
   package_dir = {'' : 'src'},
   author = "Matthew Ballance",

@@ -31,7 +31,7 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
     - name: Publish Docs
       if: startsWith(github.ref, 'refs/heads/master')
-      users: JamesIves/github-pages-deploy-action@4.1.7
+      uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
         folder: build/html

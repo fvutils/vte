@@ -1,7 +1,0 @@
-
-[template]
-desc = Synthesis scripts targeting Lattice ICE40 devices with Icestorm
-
-[parameter:top]
-desc = Top-level module 
-default = {{name}}

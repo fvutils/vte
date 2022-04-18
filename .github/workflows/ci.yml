@@ -15,6 +15,7 @@ jobs:
     - name: Configure Python
       run: |
         python3 -m pip install ivpm
+        python3 -m ivpm update
         ./packages/python/bin/python3 -m pip install wheel twine
         ./packages/python/bin/python3 -m pip install setuptools --upgrade
         export BUILD_NUM=$GITHUB_RUN_ID

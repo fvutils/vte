@@ -14,16 +14,25 @@ jobs:
         python-version: '3.9'
     - name: Configure Python
       run: |
-        python3 -m venv python
-        ./python/bin/python3 -m pip install wheel twine pyyaml
-        ./python/bin/python3 -m pip install setuptools --upgrade
+        python3 -m pip install ivpm
+        ./packages/python/bin/python3 -m pip install wheel twine
+        ./packages/python/bin/python3 -m pip install setuptools --upgrade
         export BUILD_NUM=$GITHUB_RUN_ID
-        ./python/bin/python3 setup.py bdist_wheel --universal
+        ./packages/python/bin/python3 setup.py bdist_wheel --universal
+    - name: Build docs
+      run: |
+        make html
+        touch build/html/.nojekyll
     - name: Publish to PyPi
       if: startsWith(github.ref, 'refs/heads/master')
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
-
+    - name: Publish Docs
+      if: startsWith(github.ref, 'refs/heads/master')
+      users: JamesIves/github-pages-deploy-action@4.1.7
+      with:
+        branch: gh-pages
+        folder: build/html
 

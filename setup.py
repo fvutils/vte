@@ -5,7 +5,7 @@ from setuptools import setup
 version="0.0.2"
 
 if "BUILD_NUM" in os.environ.keys():
-    version += "_" + os.environ["BUILD_NUM"]
+    version += "." + os.environ["BUILD_NUM"]
 
 setup(
   name = "vte",

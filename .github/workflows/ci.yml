@@ -22,7 +22,7 @@ jobs:
         ./packages/python/bin/python3 setup.py bdist_wheel --universal
     - name: Build docs
       run: |
-        make html
+        ./packages/python/bin/sphinx-build -M html ./doc/source build
         touch build/html/.nojekyll
     - name: Publish to PyPi
       if: startsWith(github.ref, 'refs/heads/master')

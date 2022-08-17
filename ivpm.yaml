@@ -16,17 +16,15 @@ package:
           src: pypi
         - name: Sphinx
           src: pypi
+        - name: sphinx-argparse
+          src: pypi
         - name: sphinx-rtd-theme
           src: pypi
         - name: sphinx-jsonschema
           src: pypi
         - name: cairosvg
           src: pypi
-        - name: breathe
-          src: pypi
         - name: sphinxcontrib-makedomain
-          src: pypi
-        - name: sphinxcontrib-openapi
           src: pypi
         - name: sphinxcontrib-spelling
           src: pypi

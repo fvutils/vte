@@ -14,7 +14,10 @@ setup(
   package_dir = {'' : 'src'},
   author = "Matthew Ballance",
   author_email = "matt.ballance@gmail.com",
-  description = ("VTE is a Verification Template Engine for generating content for verification environments from template files and parameters."),
+  description = "Template-driven content generation script focused on verification",
+  long_description="""
+  VTE is a Verification Template Engine for generating content for verification environments from template files and parameters.",
+  """,
   license = "Apache 2.0",
   keywords = ["SystemVerilog", "Verilog", "RTL", "GoogleTest"],
   url = "https://github.com/mballance/vte",

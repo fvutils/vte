@@ -27,7 +27,8 @@ setup(
     'setuptools_scm',
   ],
   install_requires=[
-    'jinja2>=2.10'
+    'jinja2>=2.10',
+    'pyyaml'
   ],
 )
 

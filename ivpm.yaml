@@ -6,9 +6,13 @@ package:
         - name: jinja2
           type: python
           src: pypi
+        - name: pyyaml
+          src: pypi
     dev-deps:
         - name: jinja2
           type: python
+          src: pypi
+        - name: pyyaml
           src: pypi
         - name: Sphinx
           src: pypi

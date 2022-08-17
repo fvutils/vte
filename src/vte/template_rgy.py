@@ -9,7 +9,25 @@ from vte.template_info import TemplateInfo
 
 
 class TemplateRgy:
-    def find_templates(self, dir, template_id):
+    _inst = None
+
+    def __init__(self):
+        self.template_path = []
+        self.templates = []
+        self.template_map = {}
+
+        if os.getenv("VTE_TEMPLATE_PATH") != None:
+            for elem in os.getenv("VTE_TEMPLATE_PATH").split(":"):
+                self.template_path.append(elem)
+
+    def find_templates(self):
+        self.template_map.clear()
+        self.templates.clear()
+
+        for d in self.template_path:
+            self.find_templates(d, [])
+
+    def _find_templates(self, dir, template_id):
         
         if os.path.isfile(os.path.join(dir, ".vte")):
             if len(template_id) == 0:
@@ -27,10 +45,9 @@ class TemplateRgy:
                         template_id)
                     template_id.pop()
 
-    def __init__(self, template_path):
-        self.templates = []
-        self.template_map = {}
-        
-        for d in template_path:
-            self.find_templates(d, [])
+    @classmethod
+    def inst(cls):
+        if cls._inst is None:
+            cls._inst = cls()
+        return cls._inst
     

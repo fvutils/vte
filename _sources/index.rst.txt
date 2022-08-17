@@ -10,6 +10,7 @@ Welcome to VTE's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   cmd_ref
 
 
 Indices and tables

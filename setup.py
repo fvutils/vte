@@ -1,6 +1,6 @@
 
 import os
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 
 version="0.0.2"
 
@@ -10,7 +10,7 @@ if "BUILD_NUM" in os.environ.keys():
 setup(
   name = "vte",
   version=version,
-  packages=['vte'],
+  packages=find_namespace_packages(where='src'),
   package_dir = {'' : 'src'},
   author = "Matthew Ballance",
   author_email = "matt.ballance@gmail.com",

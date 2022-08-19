@@ -4,6 +4,8 @@
 #* Registry of template info discovered based on a search list
 #****************************************************************************
 import os
+import importlib
+import pkgutil
 
 from vte.template_info import TemplateInfo
 
@@ -15,17 +17,23 @@ class TemplateRgy:
         self.template_path = []
         self.templates = []
         self.template_map = {}
+        self.plugin_path = []
 
         if os.getenv("VTE_TEMPLATE_PATH") != None:
             for elem in os.getenv("VTE_TEMPLATE_PATH").split(":"):
                 self.template_path.append(elem)
+
+        # Load plug-ins to allow them to extend the template path
+        for finder,name,ispkg in pkgutil.iter_modules():
+            if name.startswith("vte_ext_"):
+                importlib.import_module(name)
 
     def find_templates(self):
         self.template_map.clear()
         self.templates.clear()
 
         for d in self.template_path:
-            self.find_templates(d, [])
+            self._find_templates(d, [])
 
     def _find_templates(self, dir, template_id):
         
@@ -40,7 +48,7 @@ class TemplateRgy:
             for d in os.listdir(dir):
                 if os.path.isdir(os.path.join(dir, d)):
                     template_id.append(d)
-                    self.find_templates(
+                    self._find_templates(
                         os.path.join(dir, d),
                         template_id)
                     template_id.pop()

@@ -12,6 +12,7 @@ from . import template_rgy
 from .cmds.generate import CmdGenerate
 from .cmds.preprocess import CmdPreprocess
 from .cmds.list import CmdList
+from .cmds.quickstart import CmdQuickstart
 
 def substitute(vars, str):
     i=0
@@ -63,6 +64,12 @@ def get_parser():
     list_cmd = subparser.add_parser("list",
         help="list available templates")
     list_cmd.set_defaults(func=CmdList())
+
+    quickstart_cmd = subparser.add_parser("quickstart",
+        help="Creates an initial .vte template-descriptor file")
+    quickstart_cmd.add_argument("-o", "--outdir", 
+        help="Specifies the output directory (default: cwd)")
+    quickstart_cmd.set_defaults(func=CmdQuickstart())
 
     return parser
 

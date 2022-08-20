@@ -6,11 +6,17 @@
 Welcome to VTE's documentation!
 ===============================
 
+VTE (Verification Template Engine) is a lightweight tool for generating content
+from templates. Its key design goal is simplicity. VTE is built on the
+`Jinja2 <https://palletsprojects.com/p/jinja/>`_ template engine, 
+that provides powerful text-generation features.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   cmd_ref
+   quickstart
+   reference
 
 
 Indices and tables

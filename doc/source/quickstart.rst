@@ -97,8 +97,8 @@ For now, this is all we need.
     description: Create a simple README
     parameters: []
   #   - name: param_name
-  #   - description: param_desc
-  #   - default: param_default
+  #     description: param_desc
+  #     default: param_default
 
 
 Creating the Template File

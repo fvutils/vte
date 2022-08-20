@@ -1,8 +1,0 @@
-
-[template]
-desc = Creates a UVM test class
-
-[parameter:base_class]
-desc = Base class
-default = uvm_test
-

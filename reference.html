@@ -50,6 +50,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#quickstart">quickstart</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-template-parameter-values">Specifying Template-Parameter Values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-template-directives">Custom Template Directives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#filename-directive">Filename Directive</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#template-marker-file-reference">Template Marker-File Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-declarations">Parameter Declarations</a></li>
 </ul>
 </li>
 </ul>
@@ -169,6 +178,59 @@
 </dl>
 </section>
 </section>
+</section>
+<section id="specifying-template-parameter-values">
+<h3>Specifying Template-Parameter Values<a class="headerlink" href="#specifying-template-parameter-values" title="Permalink to this heading"></a></h3>
+<p>Templates may declare and use any number of parameters. Parameter values
+may be specified on the command-line using <cite>-DKEY=VALUE</cite> format. Parameters
+without a specified value expand to the empty string.</p>
+</section>
+</section>
+<section id="custom-template-directives">
+<h2>Custom Template Directives<a class="headerlink" href="#custom-template-directives" title="Permalink to this heading"></a></h2>
+<section id="filename-directive">
+<h3>Filename Directive<a class="headerlink" href="#filename-directive" title="Permalink to this heading"></a></h3>
+<p>By default, VTE generates an output file with the same name as each template
+file. The <cite>filename</cite> directive provides a way for a template file to specify
+its output filename.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/****************************************************************************
+ * {{name}}_agent_pkg.sv
+ *
+ ****************************************************************************/
+{% set filename = &quot;{{name}}_agent_pkg.sv&quot; %}
+`include &quot;uvm_macros.svh&quot;
+</pre></div>
+</div>
+<p>In the case above, we want to name the output file based on the value of
+the <cite>name</cite> parameter. All paths specified with <cite>set filename</cite> are relative
+to the original output directory of the template file.</p>
+</section>
+</section>
+<section id="template-marker-file-reference">
+<h2>Template Marker-File Reference<a class="headerlink" href="#template-marker-file-reference" title="Permalink to this heading"></a></h2>
+<p>The .vte file identifies the root of a VTE template directory hierarchy. In the
+simplest case, it only specifies a description for the template. While this
+description can be empty (VTE uses the template identifier), it is highly
+recommended to provide one.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="p">:</span>
+  <span class="n">description</span><span class="p">:</span> <span class="n">Create</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">README</span>
+</pre></div>
+</div>
+<section id="parameter-declarations">
+<h3>Parameter Declarations<a class="headerlink" href="#parameter-declarations" title="Permalink to this heading"></a></h3>
+<p>VTE templates that use template-specific parameters (ie beyond <cite>name</cite>) must
+specify those parameters in the .vte file. Each parameter is required to
+have a name. A description is highly recommended.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="p">:</span>
+  <span class="n">description</span><span class="p">:</span> <span class="n">Create</span> <span class="n">a</span> <span class="n">simple</span> <span class="n">README</span>
+  <span class="n">parameters</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">SUBJECT</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Specifies</span> <span class="n">the</span> <span class="n">subject</span> <span class="n">of</span> <span class="n">the</span> <span class="n">readme</span>
+    <span class="n">default</span><span class="p">:</span> <span class="s2">&quot;TODO: Change me&quot;</span>
+</pre></div>
+</div>
+<p>The user must supply a value for any template parameter that doesn’t have
+a default value specified in its .vte file.</p>
 </section>
 </section>
 </section>

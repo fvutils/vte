@@ -6,7 +6,7 @@ the task of template-driven content creation. In this section, we'll
 go through the three fundamental steps for using VTE:
 
 - Installing the tool
-- Createing a template
+- Creating a template
 - Using a template
 
 
@@ -89,7 +89,7 @@ This command will prompt for a description to use for the template. Enter
 a description and press `ENTER`. This will create the `.vte` marker file.
 
 View the `.vte file`. You'll see that the initial version is quite simple.
-For now, this is all we need
+For now, this is all we need.
 
 .. code:: 
 

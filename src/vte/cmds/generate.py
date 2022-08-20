@@ -66,7 +66,7 @@ class CmdGenerate(object):
             
                 if os.path.exists(filename):
                     print("Error: output file \"" + filename + "\" already exists")
-                existing_files = True
+                    existing_files = True
 
         if existing_files == True:
             raise Exception("Existing files")

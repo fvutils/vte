@@ -9,8 +9,8 @@ template:
   description: %s
   parameters: []
 #   - name: param_name
-#   - description: param_desc
-#   - default: param_default
+#     description: param_desc
+#     default: param_default
 """
 
     def __call__(self, args):

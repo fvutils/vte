@@ -45,6 +45,10 @@ class CmdGenerate(object):
         if args.force == False:
             for tmpl in env.list_templates():
                 tmpl_e = env.get_template(tmpl)
+
+                # Provide global variables to the template to enable
+                # expansion when querying the module (below)
+                tmpl_e.globals = global_vars
        
                 filename = self.substitute(global_vars, tmpl_e.name)
                 file_dir = os.path.dirname(filename)
@@ -77,8 +81,7 @@ class CmdGenerate(object):
             filename = self.substitute(global_vars, tmpl_e.name)
             file_dir = os.path.dirname(filename)
             try:
-                filename = tmpl_e.module.filename;
-            
+                filename = tmpl_e.module.filename
                 filename_u = tmpl_e.module.filename
                 
                 if filename_u.find("/") != -1 or file_dir == "":
@@ -94,7 +97,7 @@ class CmdGenerate(object):
         
             filename = self.substitute(global_vars, filename)
 
-            print("Note: processing template " + tmpl_e.name)        
+            print("Note: processing template %s => %s" % (tmpl_e.name, filename))
             result = tmpl_e.render(global_vars)
 
             dir = os.path.dirname(filename)

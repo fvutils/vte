@@ -2,7 +2,7 @@
 import os
 from setuptools import setup, find_namespace_packages
 
-version="0.0.3"
+version="0.0.4"
 
 if "BUILD_NUM" in os.environ.keys():
     version += "." + os.environ["BUILD_NUM"]

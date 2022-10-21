@@ -27,7 +27,7 @@ sys.path.insert(0,
 # -- Project information -----------------------------------------------------
 
 project = 'VTE'
-copyright = '2022, Matthew Ballance'
+copyright = '2018-2022, Matthew Ballance'
 author = 'Matthew Ballance'
 
 

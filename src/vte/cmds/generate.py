@@ -17,7 +17,9 @@ class CmdGenerate(object):
 
         template = rgy.template_map[args.template]
     
-        env = jinja2.Environment(loader=template)
+        env = jinja2.Environment(
+                loader=template,
+                extensions=['jinja2_strcase.StrcaseExtension'])
     
         global_vars = {
             "name" : args.name

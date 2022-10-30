@@ -8,11 +8,15 @@ package:
           src: pypi
         - name: pyyaml
           src: pypi
+        - name: jinja2-strcase
+          src: pypi
     dev-deps:
         - name: jinja2
           type: python
           src: pypi
         - name: pyyaml
+          src: pypi
+        - name: jinja2-strcase
           src: pypi
         - name: Sphinx
           src: pypi

@@ -23,7 +23,9 @@ class CmdPreprocess(object):
                 content = fp.read()
 
         loader = CmdPreprocess.StringTemplateLoader(content)
-        env = jinja2.Environment(loader=loader)
+        env = jinja2.Environment(
+                loader=loader,
+                extensions=['jinja2_strcase.StrcaseExtension'])
 
         global_vars = args.parameters
 

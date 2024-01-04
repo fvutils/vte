@@ -1,0 +1,28 @@
+Try every command 
+=================
+
+$ ../bin/vte
+@ usage: vte [-h] {generate,preprocess,list,quickstart} ...
+@ vte: error: the following arguments are required: subcmd
+? 2
+
+Expecting no output yet
+$ ../bin/vte list
+
+Remove previous .vte files if present
+$ rm -rf .vte example
+
+Quickstart does not generate the output directory
+$ mkdir example
+
+$ echo "Example" | ../bin/vte quickstart -o example
+| Verification Template Engine Quickstart
+| Template directory: example
+| Template Description []? 
+
+
+$ VTE_TEMPLATE_PATH=. ../bin/vte list
+| example - Example
+
+TODO: preprocess and generate
+TODO: Need jinja in codespaces to get this to work. ivpm did not work.

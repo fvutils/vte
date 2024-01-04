@@ -1,6 +1,9 @@
 Try every command 
 =================
 
+Remove previously created files if present
+$ rm -rf example file.txt
+
 $ ../bin/vte
 @ usage: vte [-h] {generate,preprocess,list,quickstart} ...
 @ vte: error: the following arguments are required: subcmd
@@ -8,9 +11,6 @@ $ ../bin/vte
 
 Expecting no output yet
 $ ../bin/vte list
-
-Remove previous .vte files if present
-$ rm -rf .vte example
 
 Quickstart does not generate the output directory
 $ mkdir example
@@ -24,5 +24,7 @@ $ echo "Example" | ../bin/vte quickstart -o example
 $ VTE_TEMPLATE_PATH=. ../bin/vte list
 | example - Example
 
-TODO: preprocess and generate
-TODO: Need jinja in codespaces to get this to work. ivpm did not work.
+$ touch file.txt 
+$ VTE_TEMPLATE_PATH=. ../bin/vte preprocess file.txt
+
+$ VTE_TEMPLATE_PATH=. ../bin/vte generate example hello

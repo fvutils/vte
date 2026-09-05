@@ -1,0 +1,188 @@
+# vim: syntax=bash
+@options timing
+
+@define TUSH_REPO='https://github.com/adolfopa/tush'
+@define GOAWK_VERSION='1.23.1'
+@define GOAWK="goawk$GOAWK_VERSION"
+
+@goal soft_folder_created @private
+@reached_if [[ -d "soft" ]]
+  mkdir soft
+
+@goal tush_installed @private
+@depends_on soft_folder_created
+@reached_if [[ -f "soft/tush/bin/tush-check" ]]
+  echo
+  echo "Fetching tush..."
+  echo
+
+  cd "soft"
+
+  if command -v wget >/dev/null
+  then
+    wget $TUSH_REPO/archive/master.tar.gz -O./tush.tar.gz
+    tar xzvf ./tush.tar.gz
+    rm ./tush.tar.gz
+    mv tush-master tush
+  elif command -v curl >/dev/null
+  then
+    curl -L $TUSH_REPO/archive/master.tar.gz -o ./tush.tar.gz
+    tar xzvf ./tush.tar.gz
+    rm ./tush.tar.gz
+    mv tush-master tush
+  else
+    git clone --depth 1 $TUSH_REPO.git
+    rm -r tush/.git
+  fi
+
+@goal default
+@depends_on tested
+
+@goal tested
+@depends_on tested_by_default_awk
+@depends_on tested_by_bwk
+@depends_on tested_by_gawk
+@depends_on tested_by @args 'tush'   'mawk -f ./fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' 'mawk -f ./fhtagn.awk'
+@depends_on tested_by_busybox_awk
+#@depends_on tested_by_goawk
+
+@goal tested_by_bwk
+@depends_on installed_bwk
+@depends_on tested_by @args 'tush'   './soft/bwk -f ./fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' './soft/bwk -f ./fhtagn.awk'
+
+@goal tested_by_gawk
+@depends_on tested_by @args 'tush'   'gawk -f ./fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' 'gawk -f ./fhtagn.awk'
+
+@goal tested_by_default_awk
+@depends_on tested_by @args 'tush'   './fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' './fhtagn.awk'
+
+@goal tested_by_busybox_awk
+@depends_on installed_busybox
+@depends_on tested_by @args 'tush'   './soft/busybox awk -f ./fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' './soft/busybox awk -f ./fhtagn.awk'
+
+@goal tested_by_goawk
+@depends_on installed_goawk
+@depends_on tested_by @args 'tush'   './soft/goawk1.23.1 -f ./fhtagn.awk'
+@depends_on tested_by @args 'fhtagn' './soft/goawk1.23.1 -f ./fhtagn.awk'
+
+@goal tested_by @params TOOL FHTAGN
+@depends_on tush_installed
+  f=tests/fhtagn.tush
+
+  echo "Testing with $TOOL ($FHTAGN)..."
+  export FHTAGN
+
+  calc_temp_files() {
+    local tmp_count=$(find /tmp -maxdepth 1 -type f -name 'fhtagn.*' | wc -l)
+    local cnt
+    (( cnt = tmp_count ))
+    if [[ -d "/dev/shm" ]]
+    then
+      local shm_count=$(find /dev/shm -maxdepth 1 -type f -name 'fhtagn.*' | wc -l)
+      (( cnt += shm_count ))
+    fi
+    echo $cnt
+  }
+
+  test_file() {
+    if [[ $TOOL == "tush" ]]
+    then
+      export PATH="$PATH:$MYDIR/soft/tush/bin"
+      DIFF="diff --strip-trailing-cr" tush-check "$f"
+    else
+      local before_count=$(calc_temp_files)
+      ./fhtagn.awk "$f"
+      local after_count=$(calc_temp_files)
+      if (( before_count != after_count ))
+      then
+        echo >&2 "!!! temp file not deleted !!!"
+        exit 1
+      fi
+    fi
+  }
+
+  if test_file
+  then
+    echo "TESTS PASSED : $f"
+  else
+    echo >&2 "!!! TESTS FAILED !!! : $f"
+    exit 1
+  fi
+
+@goal installed_bwk @private
+@reached_if [[ -f soft/bwk ]]
+@depends_on soft_folder_created
+  echo
+  echo "Fetching BWK..."
+  echo
+
+  cd "soft"
+
+  wget https://github.com/onetrueawk/awk/archive/refs/heads/master.tar.gz -Obwk.tar.gz
+  tar xzvf bwk.tar.gz
+  rm bwk.tar.gz
+
+  echo
+  echo "Compile BWK..."
+  echo
+
+  cd "awk-master"
+
+  make
+
+  mv a.out ../bwk
+
+  cd ..
+  ./bwk --version
+  rm -r awk-master
+
+@goal installed_busybox @private
+@reached_if [[ -x ./soft/busybox ]]
+  wget 'https://busybox.net/downloads/binaries/1.31.0-i686-uclibc/busybox' -O ./soft/busybox
+  chmod +x ./soft/busybox
+  echo "Installed: $(./soft/busybox | head -n 1)"
+
+@goal installed_goawk @private
+@reached_if [[ -f soft/$GOAWK ]]
+@depends_on soft_folder_created
+  echo
+  echo "Fetching GoAWK $GOAWK_VERSION ..."
+  echo
+
+  cd "soft"
+
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    os="linux"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    os="darwin"
+  else
+    >&2 echo "Unknown OS"
+    exit 1
+  fi
+
+  F=goawk_v${GOAWK_VERSION}_${os}_amd64.tar.gz
+  wget "https://github.com/benhoyt/goawk/releases/download/v$GOAWK_VERSION/$F"
+  tar xzvf "$F" goawk
+  rm "$F"
+
+  mv goawk $GOAWK
+  "./$GOAWK" --version
+
+@goal update_readme
+@doc 'updates the README.md with the current output of the tool'
+  awk '
+  !Off
+  Examples {
+    if (/^\$/) { Off=1; system(substr($0,2)) }
+    else if (/^```$/ && Off) { Off=0; print }
+  }
+  /## Usage/ { Examples=1 }
+  ' README.md > README.md.1
+  mv README.md.1 README.md
+
+

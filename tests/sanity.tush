@@ -1,0 +1,30 @@
+Try every command 
+=================
+
+Remove previously created files if present
+$ rm -rf example file.txt
+
+$ ../bin/vte
+@ usage: vte [-h] {generate,preprocess,list,quickstart} ...
+@ vte: error: the following arguments are required: subcmd
+? 2
+
+Expecting no output yet
+$ ../bin/vte list
+
+Quickstart does not generate the output directory
+$ mkdir example
+
+$ echo "Example" | ../bin/vte quickstart -o example
+| Verification Template Engine Quickstart
+| Template directory: example
+| Template Description []? 
+
+
+$ VTE_TEMPLATE_PATH=. ../bin/vte list
+| example - Example
+
+$ touch file.txt 
+$ VTE_TEMPLATE_PATH=. ../bin/vte preprocess file.txt
+
+$ VTE_TEMPLATE_PATH=. ../bin/vte generate example hello
